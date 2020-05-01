@@ -1,5 +1,8 @@
 FROM python:3.7-slim
 
+# Sets dumping log messages directly to stream instead of buffering
+ENV PYTHONUNBUFFERED 1
+
 COPY requirements.txt /app/
 RUN pip install -U pip && pip install -r /app/requirements.txt
 COPY manage.py /app/
