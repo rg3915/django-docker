@@ -1,13 +1,24 @@
 version: "3.7"
 
 services:
-    django-docker:
-        image: django-docker
-        networks:
-            - "django"
-        volumes:
-            - ./myproject/:/app/myproject/
-        ports:
-            - "32928:8000"
+  django-docker:
+    image: django-docker
+    networks:
+      - "django"
+    volumes:
+      - ./myproject/:/app/myproject/
+    ports:
+      - "32928:8000"
+
+  db:
+    image: juliano777/postgres
+    container_name: mydb
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgres
+    networks:
+      - django
+
 networks:
-    django:
+  django:
