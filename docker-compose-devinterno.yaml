@@ -1,0 +1,13 @@
+version: "3.7"
+
+services:
+    django-docker:
+        image: django-docker
+        networks:
+            - "django"
+        volumes:
+            - ./myproject/:/app/myproject/
+        ports:
+            - "32928:8000"
+networks:
+    django:
