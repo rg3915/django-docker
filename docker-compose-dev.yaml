@@ -6,7 +6,7 @@ services:
     networks:
       - "mydjango"
     volumes:
-      - ./myproject/:/app/myproject/
+      - ${HOME}/django-docker/myproject/:/app/myproject/
     ports:
       - "8090:8000"
     command: bash -c "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
@@ -15,11 +15,11 @@ services:
 
   db:
     image: juliano777/postgres
-    hostname: mydb
     container_name: mydb
-    volumes:
-      - ./data/db:/var/lib/postgresql/data
-    command: psql -c "CREATE ROLE myuser ENCRYPTED PASSWORD 'mypass' login;"
+    # volumes:
+    # - ${HOME}/django-docker/data/db:/var/local/pgsql/data
+    # command: sleep 15 && psql -c "CREATE ROLE myuser ENCRYPTED PASSWORD 'mypass' login;"
+    command: 'psql -l'
     environment:
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypass
