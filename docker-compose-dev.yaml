@@ -1,25 +1,9 @@
 version: "3.7"
 
 services:
-  django-docker:
-    image: django-docker
-    networks:
-      - "mydjango"
-    volumes:
-      - ${HOME}/django-docker/myproject/:/app/myproject/
-    ports:
-      - "8090:8000"
-    command: bash -c "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
-    depends_on:
-      - db
-
   db:
-    image: juliano777/postgres
+    image: postgres
     container_name: mydb
-    # volumes:
-    # - ${HOME}/django-docker/data/db:/var/local/pgsql/data
-    # command: sleep 15 && psql -c "CREATE ROLE myuser ENCRYPTED PASSWORD 'mypass' login;"
-    command: 'psql -l'
     environment:
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypass
@@ -28,6 +12,21 @@ services:
       - "5433:5432"
     networks:
       - mydjango
+
+  django-docker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: django-docker
+    networks:
+      - "mydjango"
+    volumes:
+      - /home/regis/gh/my/django-docker/myproject/:/app/myproject/
+    ports:
+      - "8000:8000"
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - db
 
 networks:
   mydjango:
